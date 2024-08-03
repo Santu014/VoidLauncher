@@ -25,18 +25,13 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class VoidLauncher {
     public static final String LAUNCHER_FOLDER = "C:/Users/" + System.getProperty("user.name") + "/.sl";
-    public static final String MANIFEST_URL = "https://drive.google.com/uc?export=download&id=11iOi-NV23m8f189GZaiaNCfG3iByNQCF";
+    public static final String MANIFEST_URL = "https://github.com/Santu014/VoidLauncher/blob/master/app-info/vlmanifest.json";
     
     
     //public static final String city_craft_download_url = "https://drive.google.com/uc?export=download&id=16hhBlFGo-5kKfydF0Qhm8WAC3OaxwHbh";
     public static final String city_craft_download_url = "https://drive.usercontent.google.com/u/0/uc?id=16hhBlFGo-5kKfydF0Qhm8WAC3OaxwHbh&export=download";
 
     public static void main(String[] args) {
-        try {
-            DriveTest.main(null);
-        } catch (IOException | GeneralSecurityException ex) {
-            Logger.getLogger(VoidLauncher.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
         try {
             LookAndFeel laf = new FlatDarkLaf();
