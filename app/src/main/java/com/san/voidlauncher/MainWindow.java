@@ -1,10 +1,14 @@
+package com.san.voidlauncher;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.san.voidlauncher;
+
 
 import com.san.voidlauncher.frames.LaunchingMinecraftDialog;
+import com.san.voidlauncher.frames.ModpackPanel;
+import com.san.voidlauncher.frames.ModpacksFrame;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.logging.Level;
@@ -22,12 +26,21 @@ public class MainWindow extends JFrame {
     /**
      * Creates new form MainWindow
      */
+    
+    private ModpacksFrame modpacksFrame;
+    
     public MainWindow() {
         initComponents();
         prepareComponents();
     }
     
+    public void addModpackPanel(ModpackPanel mpPanel) {
+        add(mpPanel);
+    }
+    
     private void prepareComponents() {
+        setLocationRelativeTo(null);
+        modpacksFrame = new ModpacksFrame();
         playButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -141,6 +154,11 @@ public class MainWindow extends JFrame {
         });
 
         jButton1.setText("Modpacks...");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -194,6 +212,10 @@ public class MainWindow extends JFrame {
         setVisible(false);
         dispose();
     }//GEN-LAST:event_closeButtonMouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        modpacksFrame.setVisible(true);
+    }//GEN-LAST:event_jButton1MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeButton;

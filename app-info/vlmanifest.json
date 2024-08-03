@@ -1,17 +1,19 @@
 {
   "launcher_ver": "1.0.0beta1",
-  "modpacks": {
-    "city-craft": {
+  "modpacks": [
+    {
+      "id": "city-craft",
       "version": "1.0.0beta1",
       "name": "City Craft",
       "mcver": "1.16.5",
       "modloader": "forge"
     },
-    "pokecraft": {
+    {
+      "id": "papumon",
       "version": "1.0.0beta1",
       "name": "Papumon",
       "mcver": "1.20.1",
       "modloader": "fabric"
     }
-  }
+  ]
 }
