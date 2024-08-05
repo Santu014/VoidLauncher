@@ -35,12 +35,13 @@ public class MainWindow extends JFrame {
     }
     
     public void addModpackPanel(ModpackPanel mpPanel) {
-        add(mpPanel);
+        modpacksFrame.addModpackFrame(mpPanel);
     }
     
     private void prepareComponents() {
         setLocationRelativeTo(null);
         modpacksFrame = new ModpacksFrame();
+        modpacksFrame.setLocationRelativeTo(null);
         playButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -211,6 +212,7 @@ public class MainWindow extends JFrame {
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
         setVisible(false);
         dispose();
+        System.exit(0);
     }//GEN-LAST:event_closeButtonMouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked

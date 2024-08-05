@@ -4,26 +4,39 @@
  */
 package com.san.voidlauncher.frames;
 
+import com.san.voidlauncher.VoidLauncher;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.lingala.zip4j.exception.ZipException;
+
 /**
  *
  * @author Usuario
  */
 public class ModpackPanel extends javax.swing.JPanel {
     private boolean isInstalled;
+    private String mpId;
 
     /**
      * Creates new form ModpackPanel
      */
-    public ModpackPanel(String mpName, String mpVersion, boolean isInstalled) {
+    public ModpackPanel(String mpId, String mpName, String mpVersion, boolean isInstalled) {
         initComponents();
-        prepare(mpName, mpVersion, isInstalled);
+        prepare(mpId, mpName, mpVersion, isInstalled);
     }
     
-    private void prepare(String mpName, String mpVersion, boolean isInstalled) {
+    private void prepare(String mpId, String mpName, String mpVersion, boolean isInstalled) {
         this.isInstalled = isInstalled;
+        this.mpId = mpId;
         updateIsInstalled();
         modpackName.setText(mpName);
         modpackVersion.setText(mpVersion);
+    }
+    
+    public void onDownloadFinish() {
+        
     }
     
     private void updateIsInstalled() {
@@ -66,6 +79,11 @@ public class ModpackPanel extends javax.swing.JPanel {
         selectButton.setEnabled(false);
 
         installButton.setText("Instalar");
+        installButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                installButtonMouseClicked(evt);
+            }
+        });
 
         modpackVersion.setText("ver");
 
@@ -98,6 +116,14 @@ public class ModpackPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void installButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_installButtonMouseClicked
+        try {
+            VoidLauncher.downloadModpack(mpId);
+        } catch (IOException | InterruptedException | ZipException ex) {
+            Logger.getLogger(ModpackPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_installButtonMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
