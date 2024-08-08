@@ -21,6 +21,10 @@ public class ModpackPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form ModpackPanel
+     * @param mpId
+     * @param mpName
+     * @param mpVersion
+     * @param isInstalled
      */
     public ModpackPanel(String mpId, String mpName, String mpVersion, boolean isInstalled) {
         initComponents();
@@ -35,13 +39,9 @@ public class ModpackPanel extends javax.swing.JPanel {
         modpackVersion.setText(mpVersion);
     }
     
-    public void onDownloadFinish() {
-        
-    }
-    
     private void updateIsInstalled() {
         installButton.setEnabled(!isInstalled);
-        selectButton.setEnabled(isInstalled);
+        selectButton.setEnabled(!mpId.equals(VoidLauncher.selectedModpack) && isInstalled);
     }
     
     public boolean isInstalled() {
@@ -77,6 +77,11 @@ public class ModpackPanel extends javax.swing.JPanel {
 
         selectButton.setText("Seleccionar");
         selectButton.setEnabled(false);
+        selectButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectButtonMouseClicked(evt);
+            }
+        });
 
         installButton.setText("Instalar");
         installButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -124,6 +129,11 @@ public class ModpackPanel extends javax.swing.JPanel {
             Logger.getLogger(ModpackPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_installButtonMouseClicked
+
+    private void selectButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectButtonMouseClicked
+        VoidLauncher.setSelectedModpack(mpId);
+        updateIsInstalled();
+    }//GEN-LAST:event_selectButtonMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

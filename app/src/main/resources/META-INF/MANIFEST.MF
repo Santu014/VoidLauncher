@@ -1,0 +1,2 @@
+Main-Class: com.san.voidlauncher.VoidLauncher
+Manifest-Version: 1.0

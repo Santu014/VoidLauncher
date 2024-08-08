@@ -11,7 +11,6 @@ import com.san.voidlauncher.frames.ModpackPanel;
 import com.san.voidlauncher.frames.UnzipFrame;
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -23,8 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -33,6 +30,7 @@ import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import sk.tomsik68.mclauncher.impl.common.Platform;
 
 /**
  *
@@ -46,28 +44,49 @@ public class VoidLauncher {
     
     public static Map<String, String> modpacksUrls = new HashMap<>();
     
+    public static MainWindow mainWindow;
+    public static String selectedModpack;
+    
+    public static void setSelectedModpack(String val) {
+        selectedModpack = val;
+        mainWindow.setModpack(val);
+    }
+    
     static {
         modpacksUrls.put("city-craft", "https://github.com/Santu014/VoidLauncher/raw/master/app-info/city-craft.zip");
     }
     
-    public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
-        File destFile = new File(destinationDir, zipEntry.getName());
-
-        String destDirPath = destinationDir.getCanonicalPath();
-        String destFilePath = destFile.getCanonicalPath();
-
-        if (!destFilePath.startsWith(destDirPath + File.separator)) {
-            throw new IOException("Entry is outside of the target dir: " + zipEntry.getName());
+    public static void updateModpacksFrame(File launcherManifestFile) {
+        mainWindow.updateModpackFrame();
+        String launcherManifest = null;
+        try {
+            byte[] bytes = Files.readAllBytes(launcherManifestFile.toPath());
+            launcherManifest = new String(bytes, Charset.defaultCharset());
+        } catch (IOException ex) {
+            Logger.getLogger(VoidLauncher.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        return destFile;
+        
+        JSONObject lmjson = new JSONObject(launcherManifest);
+        JSONArray lmModpacks = lmjson.getJSONArray("modpacks");
+        for (int i = 0; i < lmModpacks.length(); i++) {
+            JSONObject lmModpack = lmModpacks.getJSONObject(i);
+            boolean isInstalled;
+            String modpackPath = MODPACKS_FOLDER + "/" + lmModpack.getString("id");
+            File modpackInstalled = new File(modpackPath + "/.installed");
+            isInstalled = modpackInstalled.exists();
+            ModpackPanel modpackPanel = new ModpackPanel(lmModpack.getString("id"), lmModpack.getString("name"), lmModpack.getString("version"), isInstalled);
+            File modpackFolder = new File(modpackPath);
+            modpackFolder.mkdir();
+            mainWindow.addModpackPanel(modpackPanel);
+        }
     }
     
     public static void downloadModpack(String modpackId) throws MalformedURLException, IOException, InterruptedException, ZipException {
+        mainWindow.setModpackFrameVisibility(false);
+        
         DownloadFrame downloadFrame = new DownloadFrame(modpackId);
         downloadFrame.setLocationRelativeTo(null);
         downloadFrame.setVisible(true);
-        Thread.sleep(10l);
         
         String link = modpacksUrls.get(modpackId);
         if (link == null)
@@ -98,10 +117,23 @@ public class VoidLauncher {
         
         //unzip(modpackZipFile.getPath(), MODPACKS_FOLDER + "/" + modpackId);
         ZipFile zip = new ZipFile(MODPACKS_FOLDER + "/" + modpackId + ".zip");
-        zip.extractAll(MODPACKS_FOLDER + "/" + modpackId);
+        zip.extractAll(MODPACKS_FOLDER);
+        
+        unzipFrame.setVisible(false);
+        unzipFrame.dispose();
+        
+        File zipFile = new File(MODPACKS_FOLDER + "/" + modpackId + ".zip");
+        zipFile.delete();
+        
+        File installedFile = new File(MODPACKS_FOLDER + "/" + modpackId + "/.installed");
+        installedFile.createNewFile();
+        
+        updateModpacksFrame(new File(LAUNCHER_FOLDER + "/vlmanifest.json"));
     }
 
     public static void main(String[] args) throws Exception {
+        ProgramProperties.init();
+        
         try {
             LookAndFeel laf = new FlatDarkLaf();
             UIManager.setLookAndFeel(laf);
@@ -117,8 +149,8 @@ public class VoidLauncher {
         
         /*ZipFile zip = new ZipFile(MODPACKS_FOLDER + "/city-craft.zip");
         ZipParameters defaultZipParameters = new ZipParameters();
-        defaultZipParameters.setCompressionLevel(5);
-        zip.addFolder(MODPACKS_FOLDER + "/city-craft", defaultZipParameters);  */
+        defaultZipParameters.setCompressionLevel(9);
+        zip.addFolder(MODPACKS_FOLDER + "/city-craft", defaultZipParameters); //*/
         
         InitFrame initFrame = new InitFrame();
         initFrame.setLocationRelativeTo(null);
@@ -160,7 +192,9 @@ public class VoidLauncher {
             Logger.getLogger(VoidLauncher.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        MainWindow mainWindow = new MainWindow();
+        System.out.println();
+        
+        mainWindow = new MainWindow();
         mainWindow.setLocationRelativeTo(null);
         
         JSONObject lmjson = new JSONObject(launcherManifest);
@@ -180,6 +214,13 @@ public class VoidLauncher {
         initFrame.setVisible(false);
         initFrame.dispose();
         
+        setSelectedModpack(ProgramProperties.getProp("lastSelectedModpack"));
+        
         mainWindow.setVisible(true);
+        
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            ProgramProperties.setProp("lastSelectedModpack", selectedModpack);
+            ProgramProperties.save();
+        }));
     }
 }

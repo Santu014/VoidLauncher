@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE actions SYSTEM "action-mapping.dtd">
+<actions>
+    <action name="run" repeatable="true">
+        <args>${javaExec.workingDir} ${javaExec.environment} run --continuous ${javaExec.jvmArgs} ${javaExec.args}</args>
+    </action>
+    <action name="run.single" repeatable="true">
+        <args>-PrunClassName=${selectedClass} ${javaExec.workingDir} ${javaExec.environment} runSingle --continuous ${javaExec.jvmArgs} ${javaExec.args}</args>
+    </action>
+    <action name="run.single.method" repeatable="true">
+        <args>"${cleanTestTaskName}" "${testTaskName}" --tests "${selectedMethod}" --continuous</args>
+    </action>
+</actions>

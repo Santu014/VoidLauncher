@@ -34,6 +34,21 @@ public class MainWindow extends JFrame {
         prepareComponents();
     }
     
+    public void setModpack(String modpack) {
+        selectedModpackLabel.setText(modpack);
+    }
+    
+    public void updateModpackFrame() {
+        modpacksFrame.dispose();
+        modpacksFrame = null;
+        modpacksFrame = new ModpacksFrame();
+        modpacksFrame.setLocationRelativeTo(null);
+    }
+    
+    public void setModpackFrameVisibility(boolean value) {
+        modpacksFrame.setVisible(value);
+    }
+    
     public void addModpackPanel(ModpackPanel mpPanel) {
         modpacksFrame.addModpackFrame(mpPanel);
     }
@@ -92,7 +107,6 @@ public class MainWindow extends JFrame {
         jLabel1 = new javax.swing.JLabel();
         playButton = new javax.swing.JButton();
         selectedModpackLabel = new javax.swing.JLabel();
-        closeButton = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
         jInternalFrame1.setResizable(true);
@@ -132,27 +146,12 @@ public class MainWindow extends JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Santi Launcher");
-        setUndecorated(true);
 
         jLabel1.setText("Modpack Seleccionado:");
 
         playButton.setText("Play");
 
-        selectedModpackLabel.setText("City Craft");
-
-        closeButton.setText("X");
-        closeButton.setBorder(null);
-        closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                closeButtonMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                closeButtonMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                closeButtonMouseExited(evt);
-            }
-        });
+        selectedModpackLabel.setText("None");
 
         jButton1.setText("Modpacks...");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -169,30 +168,22 @@ public class MainWindow extends JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selectedModpackLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 159, Short.MAX_VALUE)
-                        .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(playButton)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(selectedModpackLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1)
+                    .addComponent(playButton))
+                .addGap(0, 204, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(selectedModpackLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(selectedModpackLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
                 .addGap(111, 111, 111)
                 .addComponent(playButton)
                 .addContainerGap(115, Short.MAX_VALUE))
@@ -201,26 +192,11 @@ public class MainWindow extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void closeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseEntered
-        
-    }//GEN-LAST:event_closeButtonMouseEntered
-
-    private void closeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseExited
-        
-    }//GEN-LAST:event_closeButtonMouseExited
-
-    private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
-        setVisible(false);
-        dispose();
-        System.exit(0);
-    }//GEN-LAST:event_closeButtonMouseClicked
-
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         modpacksFrame.setVisible(true);
     }//GEN-LAST:event_jButton1MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton closeButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;

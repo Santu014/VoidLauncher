@@ -70,6 +70,9 @@
         <Property name="text" type="java.lang.String" value="Seleccionar"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="selectButtonMouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="installButton">
       <Properties>
